@@ -1,0 +1,55 @@
+#!/usr/bin/env node
+
+var argv = require('argh').argv;
+var pkg  = require('../package');
+var Ecco = require('../index');
+
+// set the port if provided as non kw arg
+if (argv.argv) { argv.port = argv.argv[0]; }
+
+// convert short options to long opts for consistent use in modules
+if (argv.e) { argv.echo = argv.e; }
+if (argv.l) { argv.listen = argv.l; }
+if (argv.q) { argv.quiet = argv.q; }
+if (argv.t) { argv.target = argv.t; }
+if (argv.v) { argv.verbose = argv.v; }
+
+argv.cli = true;
+
+// Show the CLI usage screen
+if(argv.help || argv.h) {
+
+  var cl = console.log;
+
+  cl(pkg.name, pkg.version);
+  cl();
+  cl('Usage:');
+  cl(Array(8).join("-"));
+  cl('Client: $', pkg.name, '<PORT>');
+  cl('Client: $', pkg.name, '--address 10.0.0.1 <PORT>');
+  cl();
+  cl('Server: $', pkg.name, '-l <PORT>');
+  cl('Server: $', pkg.name, '-l --address 0.0.0.0 --out-file /tmp/ecco-recv' +
+     '.txt <PORT>');
+  cl();
+  cl('-h\t\t         This help screen');
+  cl('-l / --listen\t\t Start a listening server');
+  cl('-p / --port <PORT>\t The server port');
+  cl('-q / --quiet\t\t Supress output');
+  cl('-v / --verbose\t\t Increase output verbosity');
+  cl('--address <HOST>\t\t The address to serve or connect upon');
+  cl('--disable-stdout\t Supress logging of ingress/egress data to stdout ');
+  cl('--echo\t\t\t If in listen mode, echo back received data to ' +
+                        'the client');
+  cl('--timeout <TIMEOUT>\t\t Sets the idle socket timeout on server/client connections (ms)');
+  cl('--version\t\t Prints the version and exits');
+  cl('--out-file <FILE PATH>\t\t If in listen mode, write all received data to this file ');
+
+// Start a new Ecco Server
+}else if (argv.l || argv.listen) {
+  new Ecco(argv).startServer();
+
+// Start a new Ecco Client
+}else{
+  new Ecco(argv).newClient();
+}
