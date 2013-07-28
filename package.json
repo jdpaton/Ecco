@@ -14,7 +14,7 @@
     "coffee-script": ""
   },
   "keywords": ["telnet", "nc", "netcat", "echo", "socat"],
-  "repository": "",
+  "repository": "https://github.com/jdpaton/Ecco",
   "author": {
     "name": "Jamie Paton",
     "email": "jamie.paton@googlemail.com"
