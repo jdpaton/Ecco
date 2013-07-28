@@ -4,7 +4,7 @@ Ecco is the result of my search for a netcat clone that worked with
 node.js as a requireable module and via a CLI counterpart. I couldn't locate
 one, so I humbly present Ecco.
 
-It aims to have feature with the popular
+It aims to have feature parity with the popular
 [netcat-openbsd](http://www.openbsd.org/cgi-bin/man.cgi?query=nc) program.
 It's not quite there yet, but it works great as a TCP echo server right now,
 and it uses node.js' streaming interfaces under the hood.
