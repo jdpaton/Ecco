@@ -99,6 +99,23 @@ describe 'test the Ecco client', ->
       assert error
       done()
 
+  it 'should run a port scan', (done) ->
+      this.timeout 60 * 1000
+
+      server = new Ecco( { port: 3008 }).Server()
+
+      server.on 'listening', ->
+        client = new Ecco({port: "3000-4000"}).Client()
+        client.start (open, errored) ->
+          assert(open)
+          assert(3008 in open)
+          assert(errored.length > 1)
+          server.stop()
+          done()
+
+      server.start()
+
+
   # Run this test last, or in a separate file. It modifies ENV vars at runtime.
   it 'should NOT error when no options are passed to the constructor ' +
     'but $ECCO_PORT is set', (done) ->

@@ -38,16 +38,30 @@ handle simultaneous without forking an expensive sub process each time.
     --version                 Prints the version and exits
     --out-file <FILE PATH> If in listen mode, write all received data to this file
 
-As another example,you can send things to `stdin` and the client will stream it 
-to the server:
+### Pipe across the network
+
+You can send things to `stdin` and the client will stream it to the server:
 
     $ ecco -l --out-file /data/backup/file.txt 9000
 
     $ cat file.txt | ecco --address backup-server.com 9000
 
-And here's a simple TCP echo server with a one minute connection timeout:
+### Echo server
+
+A simple TCP echo server with a one minute connection timeout, by default there
+is no socket timeout:
 
     $ ecco -l --echo --timeout 60000 9000
+
+### Port scanner
+
+You can also run a simple port scan by supplying a range of ports instead:
+
+    $ ecco -l --echo 9000
+
+The port scanner has a default timeout of two seconds for each port, modifiable
+with the `--timeout` argument (ms).
+
 
 ## Module usage
 
@@ -97,6 +111,6 @@ If you want to take a shot at any of these, I would be happy to accept a PR.
 - IPv6
 - UDP protocol support
 - run system binary command on each new connection
-- multiple port ranges in client mode (a.k.a port scanner)
+- debug mode support
 
 
