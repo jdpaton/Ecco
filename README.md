@@ -57,7 +57,7 @@ is no socket timeout:
 
 You can also run a simple port scan by supplying a range of ports instead:
 
-    $ ecco -l --echo 9000
+    $ ecco 3000-4000
 
 The port scanner has a default timeout of two seconds for each port, modifiable
 with the `--timeout` argument (ms).
