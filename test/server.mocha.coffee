@@ -33,6 +33,14 @@ describe 'test the Ecco server', ->
       new EccoClient( { port: 3001, quiet: true } ).start()
       done()
 
+  it 'should listen on an IPv6 address', (done) ->
+    ipv6_addr = "::1"
+
+    new EccoServer( { address: ipv6_addr, port: 3008 } ).start ->
+      new EccoClient( { address: ipv6_addr, port: 3008 } ).start ->
+        done()
+
+
   it 'should start and emit a listening event', (done) ->
 
     server = new EccoServer( { port: 3002 } )

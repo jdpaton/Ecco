@@ -108,7 +108,6 @@ Also see the `tests/*` files for more involved usage with other arguments.
 
 If you want to take a shot at any of these, I would be happy to accept a PR.
 
-- IPv6
 - UDP protocol support
 - run system binary command on each new connection
 - debug mode support
