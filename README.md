@@ -91,7 +91,7 @@ with the `--timeout` argument (ms).
 
 ### Client (TCP)
 
-    var client = new Ecco( { port: 3000 } ).Client();
+    var client = new Ecco( { port: 3000, protocol: "UDP" } ).Client();
 
     client.on('connected', function(){
         client.conn.write(data);
@@ -107,7 +107,7 @@ with the `--timeout` argument (ms).
     server = new EccoServer( { port: 6005 } )
 
     server.on 'listening', ->
-      client = new EccoClient( { port: 6005, quiet: true, protocol: constants.UDP} )
+      client = new EccoClient( { port: 6005, quiet: true, protocol: "UDP" } )
 
       client.on 'connected', ->
         client.send 'test data'
@@ -126,6 +126,7 @@ Also see the `tests/*` files for more involved usage with other arguments.
 If you want to take a shot at any of these, I would be happy to accept a PR.
 
 - run system binary command on each new connection
+- run both TCP & UDP in one server
 - debug mode support
 
 
