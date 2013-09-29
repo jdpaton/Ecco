@@ -1,7 +1,7 @@
 assert = require 'assert'
 
 Ecco = require '../index'
-EccoServer = require '../lib/server'
+EccoServer = require '../lib/server/tcp-server'
 EccoClient = require '../lib/client'
 
 port = 9000

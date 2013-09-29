@@ -2,13 +2,13 @@ fs = require 'fs'
 assert = require 'assert'
 
 Ecco = require '../index'
-EccoServer = require '../lib/server'
+EccoServer = require '../lib/server/tcp-server'
 EccoClient = require '../lib/client'
 
 # avoid nodejs EE leak warning when running simultaneous tests
 process.stdout.setMaxListeners 100
 
-describe 'test the Ecco server', ->
+describe 'test the TCP Ecco server', ->
 
   beforeEach ->
     delete process.env['ECCO_PORT']
@@ -89,7 +89,7 @@ describe 'test the Ecco server', ->
       client.start()
 
     server.on 'connection', (socket) ->
-      socket.on 'data', (buf) ->
+      socket.once 'data', (buf) ->
         assert(buf.toString() == 'test data')
         done()
 
@@ -127,7 +127,7 @@ describe 'test the Ecco server', ->
     test_str = '٩(-̮̮̃-̃)۶ ٩(●̮̮̃•̃)۶ ٩(͡๏̯͡๏)۶ ٩(-̮̮̃•̃).'
     test_file = '/tmp/ecco-test.dat'
 
-    server = new EccoServer( { port: 3007, quiet: true, timeout: 3000, 'out-file': test_file } )
+    server = new EccoServer( { port: 3007, quiet: true, timeout: 30000, 'out-file': test_file } )
 
     server.on 'listening', ->
       client = new EccoClient( { port: 3007, quiet: true } )
@@ -138,20 +138,16 @@ describe 'test the Ecco server', ->
           # allow time for the server to write to the file
           setTimeout ->
 
-            fs.readFile test_file, (err, data)->
-              assert !err
+            fs.readFile test_file, (err, data) ->
+              done err if err
               assert data.toString() == test_str
 
               fs.unlink test_file, (err) ->
-                assert !err
-                done()
+                done(err)
           , 500
 
-
-
     server.on 'client-timeout', (client) ->
-      assert(client.remoteAddress)
-      done()
+      done(new Error("Client timeout: #{client.remoteAddress}:#{client.remotePort}"))
 
     fs.exists test_file, (exists) ->
       if exists

@@ -1,5 +1,7 @@
-var Server = require('./lib/server');
-var Client = require('./lib/client');
+var TCPServer = require('./lib/server/tcp-server'),
+    UDPServer = require('./lib/server/udp-server'),
+    Client = require('./lib/client'),
+    Constants = require('./lib/constants');
 
 /**
  * Creates an instance of Ecco
@@ -24,12 +26,14 @@ var Ecco = function(opts) {
         var version = require('./package').version;
 
         if(this.opts.cli) {
-           console.log(version);
-           process.exit();
+            console.log(version);
+            process.exit();
         }else{
-          return version;
+            return version;
         }
     }
+
+    if(!this.opts.protocol) { this.opts.protocol = 'TCP'; }
 
     if (!this.opts.port && this.opts.cli) {
         console.error('Port must be provided (--port <PORT>)');
@@ -37,6 +41,8 @@ var Ecco = function(opts) {
     }else if (!this.opts.port){
         throw new Error('The "port" argument is required');
     }
+
+    if(!this.opts.address) { this.opts.address = '127.0.0.1'; }
 
 };
 
@@ -46,7 +52,7 @@ var Ecco = function(opts) {
  * @return {EccoServer} The new Server object.
  */
 Ecco.prototype.startServer = function() {
-    return new Server(this.opts).start();
+    return this.Server().start();
 };
 
 /**
@@ -55,7 +61,11 @@ Ecco.prototype.startServer = function() {
  * @return {EccoServer} The new Server object.
  */
 Ecco.prototype.Server = function() {
-    return new Server(this.opts);
+    if (this.opts.protocol === Constants.TCP) {
+        return new TCPServer(this.opts);
+    } else if (this.opts.protocol === Constants.UDP) {
+        return new UDPServer(this.opts);
+    }
 };
 
 /**
