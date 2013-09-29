@@ -40,13 +40,13 @@ if(argv.help || argv.h) {
   cl('-q / --quiet\t\t Supress output');
   cl('-v / --verbose\t\t Increase output verbosity');
   cl('-u / --udp\t\t UDP mode')
-  cl('--address <HOST>\t\t The address to serve or connect upon');
+  cl('--address <HOST>\t The address to serve or connect upon');
   cl('--disable-stdout\t Supress logging of ingress/egress data to stdout ');
   cl('--echo\t\t\t If in listen mode, echo back received data to ' +
                         'the client');
-  cl('--timeout <TIMEOUT>\t\t Sets the idle socket timeout on server/client connections (ms)');
+  cl('--timeout <TIMEOUT>\t Sets the idle socket timeout on server/client connections (ms)');
   cl('--version\t\t Prints the version and exits');
-  cl('--out-file <FILE PATH>\t\t If in listen mode, write all received data to this file ');
+  cl('--out-file <FILE PATH>\t If in listen mode, write all received data to this file ');
 
 // Start a new Ecco Server
 }else if (argv.l || argv.listen) {
