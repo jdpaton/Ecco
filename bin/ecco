@@ -14,7 +14,7 @@ if (argv.l) { argv.listen = argv.l; }
 if (argv.q) { argv.quiet = argv.q; }
 if (argv.t) { argv.target = argv.t; }
 if (argv.v) { argv.verbose = argv.v; }
-if (argv.u) { argv.protocol = Constants.UDP; }
+if (argv.u || argv.udp) { argv.protocol = Constants.UDP; }
 
 argv.cli = true;
 
@@ -39,7 +39,7 @@ if(argv.help || argv.h) {
   cl('-p / --port <PORT>\t The server port');
   cl('-q / --quiet\t\t Supress output');
   cl('-v / --verbose\t\t Increase output verbosity');
-  cl('-u\t\t UDP mode')
+  cl('-u / --udp\t\t UDP mode')
   cl('--address <HOST>\t\t The address to serve or connect upon');
   cl('--disable-stdout\t Supress logging of ingress/egress data to stdout ');
   cl('--echo\t\t\t If in listen mode, echo back received data to ' +

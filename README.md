@@ -31,6 +31,7 @@ handle simultaneous without forking an expensive sub process each time.
     -p / --port <PORT>   The server port
     -q / --quiet                   Supress output
     -v / --verbose               Increase output verbosity
+    -u / --udp             UDP Mode
     --address <HOST>       The address to serve or connect upon
     --disable-stdout       Supress logging of ingress/egress data to stdout
     --echo                           If in listen mode, echo back received data to the client
@@ -65,7 +66,7 @@ with the `--timeout` argument (ms).
 
 ## Module usage
 
-### Server
+### Server (TCP)
 
     var Ecco = require('ecco');
 
@@ -88,7 +89,7 @@ with the `--timeout` argument (ms).
     });
 
 
-### Client
+### Client (TCP)
 
     var client = new Ecco( { port: 3000 } ).Client();
 
@@ -102,13 +103,28 @@ with the `--timeout` argument (ms).
 
     client.start()
 
+### UDP Client & Server
+    server = new EccoServer( { port: 6005 } )
+
+    server.on 'listening', ->
+      client = new EccoClient( { port: 6005, quiet: true, protocol: constants.UDP} )
+
+      client.on 'connected', ->
+        client.send 'test data'
+
+      client.start()
+
+    server.on 'message', (msg, client) ->
+      console.log(msg.toString(), client.remoteAddress, client.remotePort);
+
+    server.start()
+
 Also see the `tests/*` files for more involved usage with other arguments.
 
 ## TODO
 
 If you want to take a shot at any of these, I would be happy to accept a PR.
 
-- UDP protocol support
 - run system binary command on each new connection
 - debug mode support
 

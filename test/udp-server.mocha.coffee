@@ -78,15 +78,16 @@ describe 'test the UDP Ecco server', ->
       client.start()
       client.send 'foo'
 
-    server.on 'message', (socket) ->
-      assert(socket)
+    server.on 'message', (message, client) ->
+      assert(client)
+      assert(message)
       done()
 
     server.start()
 
   it 'should start, receive a new connection and data', (done) ->
 
-    server = new EccoServer( { port: 6005 } )
+    server = new EccoServer( { port: 6005, protocol: constants.UDP } )
 
     server.on 'listening', ->
       client = new EccoClient( { port: 6005, quiet: true, protocol: constants.UDP} )
